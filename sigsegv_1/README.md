@@ -5,6 +5,6 @@
 ```mvn clean verify jpackage:jpackage```
 3. Launch \
 ```./target/dist/sigsegv/bin/sigsegv``` \
-and press button to stop the application
+and wait for 1 sec for application exit
 4. Repeat (3) until it crashes
 

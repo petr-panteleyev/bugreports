@@ -24,7 +24,15 @@ public class Main extends Application {
         new MainDialog().showAndWait();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
+        new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+                System.exit(0);
+            } catch (Exception ex) {
+                System.exit(-1);
+            }
+        }).start();
         launch(args);
     }
 }
