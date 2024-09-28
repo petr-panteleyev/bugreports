@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>bugreports</groupId>
+    <artifactId>sigsegv_1</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+    <name>SIGSEGV</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>23</maven.compiler.release>
+        <appModule>sigsegv</appModule>
+        <appMainClass>sigsegv.Main</appMainClass>
+        <!-- Plugins -->
+        <mavenResourcePluginVersion>3.3.1</mavenResourcePluginVersion>
+        <mavenCompilerPluginVersion>3.13.0</mavenCompilerPluginVersion>
+        <mavenJarPluginVersion>3.4.1</mavenJarPluginVersion>
+        <mavenDependencyPluginVersion>3.6.1</mavenDependencyPluginVersion>
+        <jpackageMavenPluginVersion>1.6.4</jpackageMavenPluginVersion>
+        <!-- Dependencies -->
+        <javaFxVersion>23</javaFxVersion>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${javaFxVersion}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${mavenCompilerPluginVersion}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${mavenJarPluginVersion}</version>
+                <configuration>
+                    <outputDirectory>target/jmods</outputDirectory>
+                    <archive>
+                        <manifestEntries>
+                            <Main-Class>${appMainClass}</Main-Class>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>${mavenDependencyPluginVersion}</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeScope>compile</includeScope>
+                            <includeScope>runtime</includeScope>
+                            <outputDirectory>target/jmods</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.panteleyev</groupId>
+                <artifactId>jpackage-maven-plugin</artifactId>
+                <version>${jpackageMavenPluginVersion}</version>
+
+                <configuration>
+                    <type>APP_IMAGE</type>
+                    <name>sigsegv</name>
+                    <runtimeImage>${java.home}</runtimeImage>
+                    <appVersion>${project.version}</appVersion>
+                    <module>${appModule}/${appMainClass}</module>
+                    <modulePaths>
+                        <modulePath>target/jmods</modulePath>
+                    </modulePaths>
+                    <destination>target/dist</destination>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
